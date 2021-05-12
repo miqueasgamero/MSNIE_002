@@ -13,19 +13,18 @@ void main(){
 
     printf("Ingresa los valores de A, a, B, b y ẟ respectivamente\n");
     printf("Si el valor de ẟ comprende π agrege \"pi\" separado un espacio o debajo\n");
+    printf("De lo contrario ingrese \"-\" \n");
     printf("A:"); scanf("%f", &A);
     printf("a:"); scanf("%f", &a);
     printf("B:"); scanf("%f", &B);
     printf("b:"); scanf("%f", &b);
     printf("ẟ:"); scanf("%f %s", &delta, pi_place);
     
-    //printf("Delta %1.10f \n", delta);
     if (strstr(pi_place, pi) != NULL)  {
         delta = delta * M_PI;
-        //printf("Delta %1.10f \n", delta);
-        //printf("Pi %1.10f \n", M_PI);
+        printf("ẟ value now is %1.4f", delta);
     }
-    printf("El programa generó un archivo .csv\n");
+    printf("El programa generó un archivo .txt\n");
 
     genLissajousFigures(A, a, B, b, delta);
 }

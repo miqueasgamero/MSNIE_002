@@ -2,4 +2,5 @@
 function [x, y, t] = lissajous_figures(A, a, d, B, b)
     t = linspace(0,2*pi, 101);
     x = A * sin(a*t + d);
+    argumento_seno = 
     y = B * sin(b*t);
