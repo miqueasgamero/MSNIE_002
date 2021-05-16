@@ -34,7 +34,6 @@ void genLissajousFigures(float A, float a, float B, float b, float delta){
    circle = genUnitCircle();
 
    for (i = 0; i <= 100; i++) {
-      printf("Argumento del seno es: %f \n", a * circle[i] + delta);
       printf("x(t=%d) = %f \n", i, A * sin(a * circle[i] + delta));
       fprintf(fpointer, "%3.4f \n", A * sin(a * circle[i] + delta));    
    }
