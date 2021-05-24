@@ -12,6 +12,18 @@ float * genUnitCircle();
 void genLissajousFigures(float A, float a, float B, float b, float delta);
 
 void genLissajousFigures(float A, float a, float B, float b, float delta){
+   /* 
+   Parámetros de entrada:
+      ---> A: amplitud de la figura A
+      ---> a: frecuencia de la figura A
+      ---> B: amplitud de la figura B
+      ---> b: frecuencia de la figura B
+      ---> delta: angulo de desfase
+   Salida: se espera de la función que genere un archivo .txt en disco con 
+   101 valores para la figura A y 101 valores para la figura B obedeciendo
+   las relaciones matemáticas impuestas por las Curvas de Lissajous. 
+   */
+  
    FILE * fpointer;
    char fileName[100];
    int i;
@@ -20,19 +32,22 @@ void genLissajousFigures(float A, float a, float B, float b, float delta){
    time_t timer;
    char buffer[26], line[50];
    struct tm* tm_info;
-
    time(&timer);
    tm_info = localtime(&timer);
 
+   //Generación del nombre para exportar
    strcpy(fileName, "Lissajous Figure ");
    strftime(buffer, 26, "%d-%m-%y %H-%M-%S", tm_info);
    strcat(fileName, buffer);
    strcat(fileName, ".txt");
 
+   //Creación del archivo con permiso de escribir
    fpointer = fopen(fileName, "w+");   
 
+   //Invocación a la generación del círculo
    circle = genUnitCircle();
 
+   //Escritura en el archivo .txt de los valores de cada figura
    for (i = 0; i <= 100; i++) {
       printf("x(t=%d) = %f \n", i, A * sin(a * circle[i] + delta));
       fprintf(fpointer, "%3.4f \n", A * sin(a * circle[i] + delta));    
