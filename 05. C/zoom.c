@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-int k=5; //VARIABLE GLOBAL????
+#define ZOOM 5
 
-void zoom(float mat [128][128],float mat2[128*k][128*k],int k);
+void zoom(float mat [128][128],float mat2[128 * ZOOM][128 * ZOOM]);
 
 void main(){
 
     int i,j;
-    float escenario[128][128]; 
-    float escenario2[128*k][128*k]; 
+    static float escenario[128][128]; 
+    static float escenario2[128 * ZOOM][128 * ZOOM]; 
 
     FILE *arch;
     FILE *arch2;
@@ -20,7 +20,7 @@ void main(){
 
     printf("Ingresar nombre del archivo: ");
     scanf("%s", s);
-    
+
     arch = fopen(s,"r"); //Abriendo el archivo.txt
     
     if (arch == NULL){
@@ -33,24 +33,14 @@ void main(){
                 fscanf(arch,"%s \n", aux_char);
                 aux_float= strtof(aux_char, NULL);
                 escenario[i][j] = aux_float;
-                //printf("El aux_float [%d,%d] guarda: %f \n",i,j, aux_float);
-                
             }
-            //printf("\n");
         }
 
-        //Se muestra que la matriz fue correctamente cargada
-        // for (i = 0; i < 128; i++){
-        //     for(j = 0; j < 128; j++){
-        //         printf("El escenario[%d][%d] %f\n",i,j, escenario[i][j]);
-        //     }
-        //     printf("\n");
-        // }
-
         fclose(arch);
-        zoom(escenario, escenario2 ,5);
+        //_____________________________________________________
+        zoom(& escenario, & escenario2);
 
-        //Se abre otro archivo de texto para guardar la matriz una vez que se le aplico el zoom
+        /*//Se abre otro archivo de texto para guardar la matriz una vez que se le aplico el zoom
         printf("Especifique un archivo de destino");
         scanf("%s", s);
         
@@ -69,29 +59,34 @@ void main(){
         }
         printf("¡se ha realizado la tarea!");
         fclose(arch2);
-        }
+        }*/
+    }
 }
 
 //Función que realiza el escalado
-void zoom(float mat [128][128],float mat2[128*k][128*k],int k){
-   float  mataux[k*128][k*128];
-   int c,xx,xxx,cc,ck,j,i;
+void zoom(float * mat[128][128], float * mat2[640][640]){
+
+   float  mataux[128 * ZOOM][128 * ZOOM];
+   int c, xx, xxx, cc, ck, i, j;
    
     xx=128;
+
     for (i=0;i<128;i++){
         cc=0; 
         for (j=0;j<128;j++){
-            for (c=0;c<k;c++){ 
-                mataux [i][cc+c]= mat [i][j] ;
+            for (c=0; c < ZOOM;c++){ 
+                mataux [i][cc+c]= mat[i][j] ;
             } 
-                cc=cc+k; 
+                cc = cc + ZOOM; 
         }
     }
-    xxx=128*k ;
-    for (i=0;i<128*k;i++){
-        cc=i+(k-1)*(i-1); 
-        for (ck=0;ck<k;ck++) {
-            for (j=0;j<128*k;j++){
+
+    xxx=128 * ZOOM;
+
+    for (i=0;i<(128* ZOOM);i++){
+        cc = i + (ZOOM-1) * (i-1); 
+        for (ck=0; ck < ZOOM;ck++) {
+            for (j=0; j < (128*ZOOM);j++){
                 mat2[cc+ck][j]=mat[i][j]; 
             }
         }
