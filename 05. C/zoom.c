@@ -51,19 +51,29 @@ void main(){
         printf("\n");
         printf("\n");
 
-        for (i = 0; i < 128 * ZOOM; i++){
-            for (j = 0; j < 128 * ZOOM; j   ++){
+        for (i = 0; i < 128 * ZOOM - u; i++){
+            for (j = 0; j < 128 * ZOOM - v; j   ++){
                 for (u = 0; u < scale_i; u++){
                     for (v = 0; v < scale_i; v++){
                         zoomed_img[i][j+v] = (original_img[i][j+1] - original_img[i][j])*v + original_img[i][j];
-                        //printf("%1.1f \t", zoomed_img[i][j+v]);
                         zoomed_img[i+1][j+v] = (original_img[i+1][j+1] - original_img[i+1][j])*v + original_img[i+1][j];
                         zoomed_img[i + u][j + v] = (1-u)*(1-v)*original_img[i][j] - (1-u)*v*original_img[i][j+1] + u*(1-v)*original_img[i+1][j] + u*v*original_img[i+1][j+1];
-                        printf("%1.1f \t", zoomed_img[i + u][j+v]);
                     }
                 }            
             } 
         }
+        printf("Especifique un archivo de destino: ");
+        scanf("%s", s);
+        printf("%s", s);    
+        arch2 = fopen(s,"w"); //Abriendo el archivo.txt
+
+        for (i = 0; i < 128; i++){
+            for(j = 0; j < 128; j++){
+                fprintf(arch2, "%f ", zoomed_img[i][j]);
+            }
+            fprintf(arch2,"\n");
+        }
+        fclose(arch2);
     }
 }
         /*//Se abre otro archivo de texto para guardar la matriz una vez que se le aplico el zoom
