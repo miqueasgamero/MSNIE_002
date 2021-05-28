@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define ZOOM 1
+#define ZOOM 3
 
 //void zoom(float mat [128][128],float mat2[128 * ZOOM][128 * ZOOM]);
 //void bilinear_interpolation(float original_img[128][128], float*zoomed_img[128 * ZOOM][128 * ZOOM]);
@@ -11,8 +11,8 @@ void bilinear_interpolation(float * original_img);
 void main(){
 
     int i,j,u,v, scale_i, scale_j;
-    static float original_img[128][128]; 
-    static float zoomed_img[128 * ZOOM][128 * ZOOM]; 
+    float original_img[128][128]; 
+    float zoomed_img[128 * ZOOM][128 * ZOOM]; 
 
     FILE *arch;
     FILE *arch2;
@@ -47,19 +47,25 @@ void main(){
         }
 
         fclose(arch);
-
+        printf("\n");
+        printf("\n");
+        printf("\n");
 
         for (i = 0; i < 128 * ZOOM; i++){
-            for (i = 0; i < 128 * ZOOM; i++){
+            for (j = 0; j < 128 * ZOOM; j   ++){
                 for (u = 0; u < scale_i; u++){
                     for (v = 0; v < scale_i; v++){
                         zoomed_img[i][j+v] = (original_img[i][j+1] - original_img[i][j])*v + original_img[i][j];
+                        //printf("%1.1f \t", zoomed_img[i][j+v]);
                         zoomed_img[i+1][j+v] = (original_img[i+1][j+1] - original_img[i+1][j])*v + original_img[i+1][j];
                         zoomed_img[i + u][j + v] = (1-u)*(1-v)*original_img[i][j] - (1-u)*v*original_img[i][j+1] + u*(1-v)*original_img[i+1][j] + u*v*original_img[i+1][j+1];
+                        printf("%1.1f \t", zoomed_img[i + u][j+v]);
                     }
                 }            
             } 
-        } 
+        }
+    }
+}
         /*//Se abre otro archivo de texto para guardar la matriz una vez que se le aplico el zoom
         printf("Especifique un archivo de destino");
         scanf("%s", s);
@@ -80,8 +86,8 @@ void main(){
         printf("¡se ha realizado la tarea!");
         fclose(arch2);
         }*/
-    }
-}
+//    }
+//}
 
 //Función que realiza el escalado
 
