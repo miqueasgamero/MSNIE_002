@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define ZOOM 3
+#define ZOOM 10
 
-//void zoom(float mat [128][128],float mat2[128 * ZOOM][128 * ZOOM]);
-//void bilinear_interpolation(float original_img[128][128], float*zoomed_img[128 * ZOOM][128 * ZOOM]);
+//SOURCE: https://www.ijser.org/researchpaper/Adaptive-Approach-for-Zooming-Images-Using-Bilinear-Interpolation-Technique.pdf
+
 void bilinear_interpolation(float * original_img);
 
 void main(){
@@ -39,25 +39,22 @@ void main(){
             }
         }
 
-        for (i = 0; i < 5; i++){
-            for(j = 0; j < 5; j++){
-                printf("%1.1f \t", original_img[i][j]);
+        fclose(arch);
+
+        for (i = 0; i < 128; i++){
+            for (j = 0; j < 128; j++){
+                zoomed_img[i * ZOOM][j * ZOOM] = original_img[i][j];
             }
-            printf("\n");
         }
 
-        fclose(arch);
-        printf("\n");
-        printf("\n");
-        printf("\n");
-
-        for (i = 0; i < 128 * ZOOM - u; i++){
-            for (j = 0; j < 128 * ZOOM - v; j   ++){
-                for (u = 0; u < scale_i; u++){
-                    for (v = 0; v < scale_i; v++){
-                        zoomed_img[i][j+v] = (original_img[i][j+1] - original_img[i][j])*v + original_img[i][j];
-                        zoomed_img[i+1][j+v] = (original_img[i+1][j+1] - original_img[i+1][j])*v + original_img[i+1][j];
-                        zoomed_img[i + u][j + v] = (1-u)*(1-v)*original_img[i][j] - (1-u)*v*original_img[i][j+1] + u*(1-v)*original_img[i+1][j] + u*v*original_img[i+1][j+1];
+        for (i = 0; i < 128 * ZOOM - u; i+=ZOOM){
+            for (j = 0; j < 128 * ZOOM - v; j+=ZOOM){
+                for (u = 1; u < scale_i - 1; u++){
+                    for (v = 1; v < scale_j - 1; v++){                        
+                        // zoomed_img[i+u][j+v] =         
+                        // zoomed_img[i][j+v] = (original_img[i][j+1] - original_img[i][j])*v + original_img[i][j];
+                        // zoomed_img[i+1][j+v] = (original_img[i+1][j+1] - original_img[i+1][j])*v + original_img[i+1][j];
+                        // zoomed_img[i + u][j + v] = (1-u)*(1-v)*original_img[i][j] - (1-u)*v*original_img[i][j+1] + u*(1-v)*original_img[i+1][j] + u*v*original_img[i+1][j+1];
                     }
                 }            
             } 
@@ -67,8 +64,8 @@ void main(){
         printf("%s", s);    
         arch2 = fopen(s,"w"); //Abriendo el archivo.txt
 
-        for (i = 0; i < 128; i++){
-            for(j = 0; j < 128; j++){
+        for (i = 0; i < 128 * ZOOM; i++){
+            for(j = 0; j < 128 * ZOOM; j++){
                 fprintf(arch2, "%f ", zoomed_img[i][j]);
             }
             fprintf(arch2,"\n");
@@ -76,61 +73,3 @@ void main(){
         fclose(arch2);
     }
 }
-        /*//Se abre otro archivo de texto para guardar la matriz una vez que se le aplico el zoom
-        printf("Especifique un archivo de destino");
-        scanf("%s", s);
-        
-        arch2 = fopen(s,"w"); //Abriendo el archivo.txt
-    
-        // if (arch2 == NULL){
-         //     fclose(arch2);                              -----------> OJO. Nunca va a haber apertura erronea porque lo estás creando!
-        //     printf("¡Error de apertura del archivo!");
-        // }
-
-        for (i = 0; i < 128*k; i++){
-            for(j = 0; j < 128*k; j++){
-                fprintf(arch2,"%f ", escenario2[i][j]);
-            }
-            fprintf(arch2,"\n");
-        }
-        printf("¡se ha realizado la tarea!");
-        fclose(arch2);
-        }*/
-//    }
-//}
-
-//Función que realiza el escalado
-
-//https://www.ijser.org/researchpaper/Adaptive-Approach-for-Zooming-Images-Using-Bilinear-Interpolation-Technique.pdf
-
-
-/*void zoom(float * mat[128][128], float * mat2[640][640]){
-
-   float  mataux[128 * ZOOM][128 * ZOOM];
-   int c, xx, xxx, cc, ck, i, j;
-   
-   xx=128;
-
-    for (i=0;i<128;i++){
-        cc=0; 
-        for (j=0;j<128;j++){
-            for (c=0; c < ZOOM;c++){ 
-                mataux [i][cc+c]= mat[i][j] ;
-            } 
-            cc = cc + ZOOM; 
-        }
-    }
-
-    xxx=128 * ZOOM;
-
-    for (i=0;i<(128* ZOOM);i++){
-
-        cc = i + (ZOOM-1) * (i-1); 
-
-        for (ck=0; ck < ZOOM;ck++) {
-            for (j=0; j < (128*ZOOM);j++){
-                mat2[cc+ck][j]=mat[i][j]; 
-            }
-        }
-    }
-}*/
